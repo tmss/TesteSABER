@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+	
+	<div>Digite o CPF:</div>
+	<br>
+    <form action="" method="POST">{% csrf_token %}
+        
+        {{form.cpf}}
+        
+        <input type="submit" value="Submit" />
+        {% for error in form.cpf.errors %}
+        	<div class="error">{{error}}</div>
+        {% endfor %}
+{% endblock %}

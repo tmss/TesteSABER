@@ -1,5 +1,5 @@
 # Create your views here.
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from reservas.forms import cadastroForm, cpfForm
 from reservas.models import User
@@ -9,29 +9,41 @@ def cpf_form(request):
 		form = cpfForm(request.POST)
 		usr = User()
 		if form.is_valid():
-			usr.cpf = form.cleaned_data['cpf']
-			usr.save()
-			return HttpResponseRedirect('/cadastro/')
+			try:
+				if User.objects.get(cpf=form.cleaned_data['cpf']):
+					return HttpResponse('CPF existente!<br><a href="">Voltar</a>')
+			except:
+				usr.cpf = form.cleaned_data['cpf']
+				usr.save()
+				return HttpResponseRedirect('/cadastro/' + usr.cpf)
 		else:
-			return HttpResponse('cpf errado!')
+			return render(request, 'cpf_form.html', {'form': form})
 	else:
 		form = cpfForm()
 
 	return render(request, 'cpf_form.html', {'form': form})
 
-def cadastro(request):
+def cadastro(request, cpf):
 	if request.method == 'POST':
 		form = cadastroForm(request.POST)
-		usr = User()
+		usr = User.objects.get(cpf=cpf)
 		if form.is_valid():
 			usr.nome = form.cleaned_data['nome']
 			usr.idade = form.cleaned_data['idade']
-			#user.sexo = user.cleaned_data['sexo']
+			usr.sexo = form.cleaned_data['sexo']
+			usr.email = form.cleaned_data['email']
+			usr.aniversario = form.cleaned_data['aniversario']
+			usr.profissao = form.cleaned_data['profissao']
+			usr.experiencia = form.cleaned_data['experiencia']
 			usr.save()
-			return HttpResponse('%s' % form.nome)
-		else:
-			return HttpResponse('erro!')
+			return HttpResponseRedirect('/resultados/')
 	else:
-		user = cadastro()
+		form = cadastroForm()
 
-	return render(request, 'cadastro.html')
+	return render(request, 'cadastro.html', {'form': form})
+
+def resultados(request):
+	context = {}
+	context['feminino'] = User.objects.all().filter(sexo='F')
+	context['masculino'] = User.objects.all().filter(sexo='M')
+	return render(request,'resultados.html', context)

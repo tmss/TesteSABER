@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/custom.css" />
+</head>
+<body>
+	<div id="content">
+		{% block content %}
+		{% endblock %}
+	</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom row" role="navigation">
+		<div class="col-md-1">
+			<img src="http://techover.in/wp-content/uploads/2013/08/apple_logo.png" id="img-logo" alt="">
+		</div>
+		<div class="col-md-11">
+			<div id="colab">Desenvolvido por Thais Morais de Sousa Silva <br>Centro De Informática - UFPE</div>
+		</div>
+	</nav>
+
+	{% block scripts %}
+	{% endblock %}
+</body>

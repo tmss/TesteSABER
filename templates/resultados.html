@@ -1,0 +1,29 @@
+{% block content %}
+
+<h2>Cadastros efetuados</h2>
+
+<div>Lista de mulheres cadastradas: </div>
+
+<ul>
+{% for fem in feminino %}
+    <li>{{ fem.nome }} -- {{ fem.idade }} </li>
+{% endfor %}
+</ul>
+<hr>
+<div>Lista de homens cadastrados: </div>
+<ul>
+{% for mas in masculino %}
+    <li>{{ mas.nome }} -- {{ mas.idade }} </li>
+{% endfor %}
+</ul>
+
+{% endblock %}
+
+{% block scripts%}
+<script type="text/javascript">
+	window.onload = function(){
+		alert('Dados salvos com sucesso!');
+	}
+</script>
+{% endblock %}
+
